@@ -35,7 +35,8 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 5000000, 
         runtimeCaching: [
           {
-            urlPattern: /\/stream\/.*/i,
+            // Workbox requiere que la expresión regular coincida con el inicio de la URL completa (^http...) para peticiones cross-origin
+            urlPattern: /^https?:\/\/.*\/stream\/.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'music-pwa-media',
