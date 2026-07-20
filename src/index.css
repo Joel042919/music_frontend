@@ -1,0 +1,58 @@
+:root {
+  --bg-dark: #000000;
+  --bg-sidebar: #121212;
+  --bg-player: #181818;
+  --bg-card: #181818;
+  --bg-card-hover: #282828;
+  
+  --primary: #1ed760; /* Spotify-like green for the accent */
+  --primary-hover: #1fdf64;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-disabled: #535353;
+  
+  --font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+input {
+  font-family: inherit;
+}
+
+/* Glassmorphism helpers if needed */
+.glass {
+  background: rgba(24, 24, 24, 0.7);
+  backdrop-filter: blur(10px);
+}

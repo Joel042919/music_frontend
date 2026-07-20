@@ -1,0 +1,119 @@
+.sidebar {
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 12px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 0 12px 24px 12px;
+}
+
+.sidebar-logo h2 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.nav-section {
+  margin-bottom: 24px;
+}
+
+.nav-section h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  padding: 0 12px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.sidebar-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav a:hover {
+  color: var(--text-primary);
+}
+
+.sidebar-nav a.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.sidebar-nav a.active svg {
+  color: var(--primary);
+}
+
+.playlists-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 12px;
+}
+
+.btn-icon {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.btn-icon:hover {
+  color: var(--text-primary);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    bottom: 90px; /* height of bottom player */
+    left: 0;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    padding: 10px;
+    z-index: 100;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  .sidebar-logo, .playlists-section, .nav-section h3 {
+    display: none;
+  }
+  
+  .nav-section {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .sidebar-nav ul {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .sidebar-nav a {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.7rem;
+    padding: 6px;
+  }
+}

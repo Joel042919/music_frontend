@@ -1,0 +1,56 @@
+.detail-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.detail-header {
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(18, 18, 18, 1));
+  box-shadow: inset 0 -40px 100px -20px rgba(0, 0, 0, 0.8);
+  gap: 24px;
+  border-radius: 0 0 16px 16px;
+  margin-bottom: 20px;
+}
+
+.detail-image {
+  width: 232px;
+  height: 232px;
+  object-fit: cover;
+  border-radius: 8px; /* Square for album by default */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.artist-header .artist-image {
+  border-radius: 50%; /* Circle for artists */
+}
+
+.detail-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: var(--text-primary);
+}
+
+.detail-info span {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.detail-title {
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.detail-info p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 0;
+}
