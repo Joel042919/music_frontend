@@ -11,7 +11,7 @@ interface Playlist {
   name: string;
 }
 
-const API_URL = 'http://localhost:8787/api';
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:8787/api';
 
 export const Sidebar: React.FC = () => {
   const { token } = useAuth();

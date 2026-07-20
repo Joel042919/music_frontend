@@ -35,7 +35,7 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 5000000, 
         runtimeCaching: [
           {
-            urlPattern: /^http:\/\/localhost:8787\/stream\/.*/i,
+            urlPattern: /\/stream\/.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'music-pwa-media',

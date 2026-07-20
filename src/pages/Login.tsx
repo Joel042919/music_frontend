@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
-const API_URL = 'http://localhost:8787/api'; // Cambiar por la de produccion
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:8787/api';
 
 export const Login: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);

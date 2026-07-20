@@ -3,6 +3,7 @@ import type { Song } from '../components/ui/SongList';
 
 const DB_NAME = 'music-pwa-db';
 const STORE_NAME = 'downloaded_songs';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8787';
 
 export async function initDB() {
   return openDB(DB_NAME, 1, {
@@ -48,7 +49,7 @@ export async function downloadAudioFile(_url: string, streamEndpoint: string) {
   if (existingRes) return; // Ya descargado
 
   // 1. Obtenemos URL firmada real
-  const presignedRes = await fetch(`http://localhost:8787/api/get-download-url?key=${_url}`);
+  const presignedRes = await fetch(`${API_URL}/api/get-download-url?key=${_url}`);
   if (!presignedRes.ok) throw new Error('No se pudo obtener URL de descarga');
   const { url: realUrl } = await presignedRes.json();
 
@@ -64,7 +65,7 @@ export async function downloadAudioFile(_url: string, streamEndpoint: string) {
 
 // Función orquestadora para la descarga
 export async function downloadSong(song: Song) {
-  const streamEndpoint = `http://localhost:8787/stream/${song.url}`;
+  const streamEndpoint = `${API_URL}/stream/${song.url}`;
   
   // 1. Guardamos archivo de audio en Cache API
   await downloadAudioFile(song.url, streamEndpoint);
@@ -72,7 +73,7 @@ export async function downloadSong(song: Song) {
   // 2. Guardamos imagen en Cache API (usando la misma estrategia para evadir CORS si aplica)
   if (song.url_imagen_album) {
     const isExternal = song.url_imagen_album.startsWith('http');
-    const imageEndpoint = isExternal ? song.url_imagen_album : `http://localhost:8787/stream/${song.url_imagen_album}`;
+    const imageEndpoint = isExternal ? song.url_imagen_album : `${API_URL}/stream/${song.url_imagen_album}`;
       
     const imageCache = await caches.open('music-pwa-media');
     
@@ -84,7 +85,7 @@ export async function downloadSong(song: Song) {
         if (imgRes.ok) await storeInCacheCleanly(imageCache, imageEndpoint, imgRes);
       } else {
         // Obtener url firmada de la imagen
-        const presignedImgRes = await fetch(`http://localhost:8787/api/get-download-url?key=${song.url_imagen_album}`);
+        const presignedImgRes = await fetch(`${API_URL}/api/get-download-url?key=${song.url_imagen_album}`);
         if (presignedImgRes.ok) {
           const { url: realImgUrl } = await presignedImgRes.json();
           const imgRes = await fetch(realImgUrl);
@@ -111,13 +112,13 @@ export async function deleteDownloadedSong(songId: string, songUrl: string, imgU
   await db.delete(STORE_NAME, songId);
 
   // Eliminar de Cache API
-  const streamEndpoint = `http://localhost:8787/stream/${songUrl}`;
+  const streamEndpoint = `${API_URL}/stream/${songUrl}`;
   const mediaCache = await caches.open('music-pwa-media');
   await mediaCache.delete(streamEndpoint);
 
   // Eliminar imagen del cache
   if (imgUrl) {
-    const imageEndpoint = imgUrl.startsWith('http') ? imgUrl : `http://localhost:8787/stream/${imgUrl}`;
+    const imageEndpoint = imgUrl.startsWith('http') ? imgUrl : `${API_URL}/stream/${imgUrl}`;
     await mediaCache.delete(imageEndpoint);
   }
 }
