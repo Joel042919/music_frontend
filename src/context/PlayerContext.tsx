@@ -62,7 +62,8 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     if (audioRef.current) {
       // Como estamos trabajando con R2, la url es el fileKey. 
       // El endpoint de streaming es /stream/:key
-      const streamUrl = `http://localhost:8787/stream/${song.url}`;
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8787';
+      const streamUrl = `${API_URL}/stream/${song.url}`;
       audioRef.current.src = streamUrl;
       audioRef.current.play()
         .then(() => setIsPlaying(true))
