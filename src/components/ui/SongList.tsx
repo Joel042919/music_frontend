@@ -1,7 +1,9 @@
 import React from 'react';
-import { Play, MoreHorizontal } from 'lucide-react';
+import { Play, MoreHorizontal, Volume2, CheckCircle } from 'lucide-react';
 import { getImageUrl } from '../../utils/imageUrl';
 import { AddToPlaylistModal } from './AddToPlaylistModal';
+import { usePlayer } from '../../context/PlayerContext';
+import { getDownloadedSongs } from '../../services/offlineStorage';
 import './SongList.css';
 
 export interface Song {
@@ -30,6 +32,9 @@ const formatDuration = (ms: number) => {
 export const SongList: React.FC<SongListProps> = ({ songs, onPlay, onDownload }) => {
   const [dropdownOpenId, setDropdownOpenId] = React.useState<string | null>(null);
   const [selectedSongForPlaylist, setSelectedSongForPlaylist] = React.useState<Song | null>(null);
+  const [downloadedIds, setDownloadedIds] = React.useState<Set<string>>(new Set());
+  
+  const { currentSong } = usePlayer();
 
   // Cierra el menú al hacer clic en cualquier lado de la pantalla
   React.useEffect(() => {
@@ -37,6 +42,13 @@ export const SongList: React.FC<SongListProps> = ({ songs, onPlay, onDownload })
     document.addEventListener('click', closeDropdown);
     return () => document.removeEventListener('click', closeDropdown);
   }, []);
+
+  // Cargar IDs de canciones descargadas
+  React.useEffect(() => {
+    getDownloadedSongs().then(dSongs => {
+      setDownloadedIds(new Set(dSongs.map(s => s.id)));
+    }).catch(console.error);
+  }, [songs]);
 
   return (
     <>
@@ -50,10 +62,18 @@ export const SongList: React.FC<SongListProps> = ({ songs, onPlay, onDownload })
         </div>
         
         <div className="song-list-body">
-          {songs.map((song, index) => (
-            <div key={song.id} className="song-row" onDoubleClick={() => onPlay(song)}>
+          {songs.map((song, index) => {
+            const isCurrent = currentSong?.id === song.id;
+            const isDownloaded = downloadedIds.has(song.id);
+            
+            return (
+            <div key={song.id} className={`song-row ${isCurrent ? 'active' : ''}`} onDoubleClick={() => onPlay(song)}>
               <div className="col-index">
-                <span className="index-num">{index + 1}</span>
+                {isCurrent ? (
+                  <span className="index-num playing-indicator"><Volume2 size={16} color="#1db954" /></span>
+                ) : (
+                  <span className="index-num">{index + 1}</span>
+                )}
                 <button className="play-btn" onClick={() => onPlay(song)}>
                   <Play size={16} fill="currentColor" />
                 </button>
@@ -62,7 +82,10 @@ export const SongList: React.FC<SongListProps> = ({ songs, onPlay, onDownload })
               <div className="col-title">
                 <img src={getImageUrl(song.url_imagen_album)} alt={song.name} className="song-thumb" />
                 <div className="song-info">
-                  <span className="song-name">{song.name}</span>
+                  <span className="song-name" style={{ color: isCurrent ? '#1db954' : '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {song.name}
+                    {isDownloaded && <span title="Descargada" style={{ display: 'flex' }}><CheckCircle size={14} color="#1db954" /></span>}
+                  </span>
                   <span className="song-artist">{song.artist_name || 'Desconocido'}</span>
                 </div>
               </div>
@@ -124,7 +147,8 @@ export const SongList: React.FC<SongListProps> = ({ songs, onPlay, onDownload })
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       

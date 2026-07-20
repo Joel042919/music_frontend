@@ -30,6 +30,10 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.song-row.active {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
 .col-index {
   width: 40px;
   text-align: center;
