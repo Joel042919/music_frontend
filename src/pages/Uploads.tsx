@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { uploadToR2 } from '../services/r2Upload';
 import './Grid.css';
 
-const API_URL = 'http://localhost:8787/api';
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:8787/api';
 
 export const Uploads: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'music' | 'author' | 'album'>('music');

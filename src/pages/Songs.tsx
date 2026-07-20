@@ -4,7 +4,7 @@ import { usePlayer } from '../context/PlayerContext';
 import { getDownloadedSongs, downloadSong } from '../services/offlineStorage';
 import './Grid.css';
 
-const API_URL = 'http://localhost:8787/api';
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:8787/api';
 
 export const Songs: React.FC = () => {
   const [songs, setSongs] = useState<Song[]>([]);
